@@ -1,0 +1,151 @@
+# 문제
+# 이 문제는 아주 평범한 배낭에 관한 문제이다.
+
+# 한 달 후면 국가의 부름을 받게 되는 준서는 여행을 가려고 한다. 세상과의 단절을 슬퍼하며 최대한 즐기기 위한 여행이기 때문에, 가지고 다닐 배낭 또한 최대한 가치 있게 싸려고 한다.
+
+# 준서가 여행에 필요하다고 생각하는 N개의 물건이 있다. 각 물건은 무게 W와 가치 V를 가지는데, 해당 물건을 배낭에 넣어서 가면 준서가 V만큼 즐길 수 있다. 아직 행군을 해본 적이 없는 준서는 최대 K만큼의 무게만을 넣을 수 있는 배낭만 들고 다닐 수 있다. 준서가 최대한 즐거운 여행을 하기 위해 배낭에 넣을 수 있는 물건들의 가치의 최댓값을 알려주자.
+
+# 입력
+# 첫 줄에 물품의 수 N(1 ≤ N ≤ 100)과 준서가 버틸 수 있는 무게 K(1 ≤ K ≤ 100,000)가 주어진다. 두 번째 줄부터 N개의 줄에 거쳐 각 물건의 무게 W(1 ≤ W ≤ 100,000)와 해당 물건의 가치 V(0 ≤ V ≤ 1,000)가 주어진다.
+
+# 입력으로 주어지는 모든 수는 정수이다.
+
+# 출력
+# 한 줄에 배낭에 넣을 수 있는 물건들의 가치합의 최댓값을 출력한다.
+# 
+# 
+# 예제 입력 1 
+# 4 7
+# 6 13
+# 4 8
+# 3 6
+# 5 12
+# 예제 출력 1 
+# 14
+#
+# 해답 : https://howudong.tistory.com/106
+# 문제 : https://www.acmicpc.net/problem/12865
+#
+
+class Tester:
+    candidate = 'candidate'
+    limit = 'limit'
+        
+    index :int = 0
+    
+    answers = []
+    cases = []
+    count = 0
+    
+    @classmethod
+    def init(cls):
+        cls.cases = [
+            {cls.candidate : [
+                (6, 13),
+                (4, 8),
+                (3, 6),
+                (5, 12),
+                # 13 + 6 + 12 = 31
+            ],
+            cls.limit : 14
+            },
+            {cls.candidate : [
+                (6, 0),
+            ],
+            cls.limit : 100
+            },
+            {cls.candidate : [
+                (1,2),
+                (3,4),
+                (5,6),
+                (7,8),
+                (9,10),
+                (11,12),
+                (13,12),
+                (16,28),
+                (13,24),
+                (24,42),
+            ],
+            cls.limit : 100
+            },
+        ]
+        
+        cls.answers = [31,0, 0]
+        
+        cls.count = 3
+    
+    @classmethod
+    def next(cls) -> tuple[dict[str, any], any]:
+        res = (cls.cases[cls.index],cls.answers[cls.index])
+        cls.index += 1
+        return res
+
+# def weight_value_sum(candidate: list[tuple[int,int]], target_indices = list[int]) -> list[int, int]:
+#     sum_v = 0
+#     sum_w = 0
+#     for index in target_indices:
+#         w, v = candidate[index]
+#         sum_v += v
+#         sum_w += w
+    
+#     return (sum_w, sum_v)
+
+# def identical(a:list[int], b:list[int]) -> bool:
+#     if len(a) != len(b):
+#         return False
+#     for i in range(len(a)):
+#         if a[i] != b[i]:
+#             return False
+
+#     return True
+
+
+def main(candidate :list[tuple[int,int]], limit:int):
+    highest_value = 0
+    def highest(bag : list[int], bag_weight: int, bag_value: int):
+        # print("bag",bag,"weight",bag_weight, "value",bag_value)
+        
+        nonlocal highest_value
+        if (highest_value > bag_value):
+            return None
+        if bag_weight <= limit:
+            if (highest_value < bag_value):
+                highest_value = bag_value
+            return None
+        else:            
+            for i in range(len(bag)):
+                new_bag = bag[:]
+                popped = new_bag.pop(i)
+                w, v = candidate[popped]
+                after_weight = bag_weight - w
+                after_value = bag_value - v
+                highest(new_bag, after_weight, after_value)
+    max_weight = 0
+    max_value = 0
+    for i in range(len(candidate)):
+        w,v = candidate[i]
+        max_weight += w
+        max_value += v
+    highest([i for i in range(len(candidate))], max_weight, max_value)
+        
+    return highest_value
+
+if __name__ == "__main__":
+    
+    print("====TEST START====")
+    
+    # Tester.init()
+    # for i in range(Tester.count):
+    #     put, take = Tester.next()
+        
+    #     res = main(candidate=put[Tester.candidate], limit=put[Tester.limit])
+        
+    #     print("result : ", res, "answer : ", take)
+        
+    first_input = list(map(int, input().split(' ')))
+    candidate = []
+    for i in range(first_input[0]):
+        candidate.append(tuple(map(int, input().split(' '))))
+    res = main(candidate=candidate, limit=first_input[1])
+
+    print(res)
