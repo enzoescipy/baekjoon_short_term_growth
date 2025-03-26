@@ -1,0 +1,338 @@
+{
+    "home": {
+        "home-easy": {
+            "base_path": "lib/app/screen/Tab/components/Home/components/detail/components/home_easy/",
+            "components": {
+                "before": {
+                    "path": "0_before",
+                    "files": {
+                        "binding": {
+                            "file": "binding/before_binding.dart",
+                            "rename": {
+                                "from": "BeforeBinding",
+                                "to": "EasyBeforeBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/before_controller.dart",
+                            "rename": {
+                                "from": "BeforeController",
+                                "to": "EasyBeforeController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/before_view.dart",
+                            "rename": {
+                                "from": "BeforeView",
+                                "to": "EasyBeforeView"
+                            }
+                        }
+                    }
+                },
+                "before_affective": {
+                    "path": "1_before_affective",
+                    "files": {
+                        "binding": {
+                            "file": "binding/before_affective_binding.dart",
+                            "rename": {
+                                "from": "BeforeAffecBinding",
+                                "to": "EasyBeforeAffecBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/before_affective_controller.dart",
+                            "rename": {
+                                "from": "BeforeAffecController",
+                                "to": "EasyBeforeAffecController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/before_affective_view.dart",
+                            "rename": {
+                                "from": "BeforeAffecView",
+                                "to": "EasyBeforeAffecView"
+                            }
+                        }
+                    }
+                },
+                "after": {
+                    "path": "2_after",
+                    "files": {
+                        "binding": {
+                            "file": "binding/after_binding.dart",
+                            "rename": {
+                                "from": "AfterBinding",
+                                "to": "EasyAfterBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/after_controller.dart",
+                            "rename": {
+                                "from": "AfterController",
+                                "to": "EasyAfterController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/after_view.dart",
+                            "rename": {
+                                "from": "AfterView",
+                                "to": "EasyAfterView"
+                            }
+                        }
+                    }
+                },
+                "after_affective": {
+                    "path": "3_after_affective",
+                    "files": {
+                        "binding": {
+                            "file": "binding/after_affective_binding.dart",
+                            "rename": {
+                                "from": "AfterAffecBinding",
+                                "to": "EasyAfterAffecBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/after_affective_controller.dart",
+                            "rename": {
+                                "from": "AfterAffecController",
+                                "to": "EasyAfterAffecController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/after_affective_view.dart",
+                            "rename": {
+                                "from": "AfterAffecView",
+                                "to": "EasyAfterAffecView"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "home-fast": {
+            "base_path": "lib/app/screen/Tab/components/Home/components/detail/components/home_fast/",
+            "components": {
+                "before": {
+                    "path": "0_before",
+                    "files": {
+                        "binding": {
+                            "file": "binding/before_binding.dart",
+                            "rename": {
+                                "from": "BeforeBinding",
+                                "to": "FastBeforeBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/before_controller.dart",
+                            "rename": {
+                                "from": "BeforeController",
+                                "to": "FastBeforeController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/before_view.dart",
+                            "rename": {
+                                "from": "BeforeView",
+                                "to": "FastBeforeView"
+                            }
+                        }
+                    }
+                },
+                "before_affective": {
+                    "path": "1_before_affective",
+                    "files": {
+                        "binding": {
+                            "file": "binding/before_affective_binding.dart",
+                            "rename": {
+                                "from": "BeforeAffecBinding",
+                                "to": "FastBeforeAffecBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/before_affective_controller.dart",
+                            "rename": {
+                                "from": "BeforeAffecController",
+                                "to": "FastBeforeAffecController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/before_affective_view.dart",
+                            "rename": {
+                                "from": "BeforeAffecView",
+                                "to": "FastBeforeAffecView"
+                            }
+                        }
+                    }
+                },
+                "after": {
+                    "path": "2_after",
+                    "files": {
+                        "binding": {
+                            "file": "binding/after_binding.dart",
+                            "rename": {
+                                "from": "AfterBinding",
+                                "to": "FastAfterBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/after_controller.dart",
+                            "rename": {
+                                "from": "AfterController",
+                                "to": "FastAfterController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/after_view.dart",
+                            "rename": {
+                                "from": "AfterView",
+                                "to": "FastAfterView"
+                            }
+                        }
+                    }
+                },
+                "after_affective": {
+                    "path": "3_after_affective",
+                    "files": {
+                        "binding": {
+                            "file": "binding/after_affective_binding.dart",
+                            "rename": {
+                                "from": "AfterAffecBinding",
+                                "to": "FastAfterAffecBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/after_affective_controller.dart",
+                            "rename": {
+                                "from": "AfterAffecController",
+                                "to": "FastAfterAffecController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/after_affective_view.dart",
+                            "rename": {
+                                "from": "AfterAffecView",
+                                "to": "FastAfterAffecView"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "history": {
+        "history-easy": {
+            "base_path": "lib/app/screen/Tab/components/History/components/detail/components/history_easy/",
+            "components": {
+                "combined": {
+                    "path": "0_combined",
+                    "files": {
+                        "binding": {
+                            "file": "bindings/combined_binding.dart",
+                            "rename": {
+                                "from": "CombinedBinding",
+                                "to": "EasyCombinedBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/combined_controller.dart",
+                            "rename": {
+                                "from": "CombinedController",
+                                "to": "EasyCombinedController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/combined_view.dart",
+                            "rename": {
+                                "from": "CombinedView",
+                                "to": "EasyCombinedView"
+                            }
+                        }
+                    }
+                },
+                "combined_affective": {
+                    "path": "1_combined_affective",
+                    "files": {
+                        "binding": {
+                            "file": "bindings/combined_affective_binding.dart",
+                            "rename": {
+                                "from": "CombinedAffecBinding",
+                                "to": "EasyCombinedAffecBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/combined_affective_controller.dart",
+                            "rename": {
+                                "from": "CombinedAffecController",
+                                "to": "EasyCombinedAffecController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/combined_affective_view.dart",
+                            "rename": {
+                                "from": "CombinedAffecView",
+                                "to": "EasyCombinedAffecView"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "history-fast": {
+            "base_path": "lib/app/screen/Tab/components/History/components/detail/components/history_fast/",
+            "components": {
+                "combined": {
+                    "path": "0_combined",
+                    "files": {
+                        "binding": {
+                            "file": "bindings/combined_binding.dart",
+                            "rename": {
+                                "from": "CombinedBinding",
+                                "to": "FastCombinedBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/combined_controller.dart",
+                            "rename": {
+                                "from": "CombinedController",
+                                "to": "FastCombinedController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/combined_view.dart",
+                            "rename": {
+                                "from": "CombinedView",
+                                "to": "FastCombinedView"
+                            }
+                        }
+                    }
+                },
+                "combined_affective": {
+                    "path": "1_combined_affective",
+                    "files": {
+                        "binding": {
+                            "file": "bindings/combined_affective_binding.dart",
+                            "rename": {
+                                "from": "CombinedAffecBinding",
+                                "to": "FastCombinedAffecBinding"
+                            }
+                        },
+                        "controller": {
+                            "file": "controller/combined_affective_controller.dart",
+                            "rename": {
+                                "from": "CombinedAffecController",
+                                "to": "FastCombinedAffecController"
+                            }
+                        },
+                        "view": {
+                            "file": "view/combined_affective_view.dart",
+                            "rename": {
+                                "from": "CombinedAffecView",
+                                "to": "FastCombinedAffecView"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

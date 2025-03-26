@@ -27,14 +27,16 @@
 # 문제 : https://www.acmicpc.net/problem/12865
 #
 
+from audioop import add
+
+
 class Tester:
     candidate = 'candidate'
-    limit = 'limit'
-        
+    limit = 'limit'  
     index :int = 0
     
-    answers = []
-    cases = []
+    answers:list[int] = []
+    cases:list[int] = []
     count = 0
     
     @classmethod
@@ -72,7 +74,7 @@ class Tester:
         
         cls.answers = [31,0, 0]
         
-        cls.count = 3
+        cls.count = 1
     
     @classmethod
     def next(cls) -> tuple[dict[str, any], any]:
@@ -100,52 +102,104 @@ class Tester:
 #     return True
 
 
-def main(candidate :list[tuple[int,int]], limit:int):
-    highest_value = 0
-    def highest(bag : list[int], bag_weight: int, bag_value: int):
-        # print("bag",bag,"weight",bag_weight, "value",bag_value)
-        
-        nonlocal highest_value
-        if (highest_value > bag_value):
-            return None
-        if bag_weight <= limit:
-            if (highest_value < bag_value):
-                highest_value = bag_value
-            return None
-        else:            
-            for i in range(len(bag)):
-                new_bag = bag[:]
-                popped = new_bag.pop(i)
-                w, v = candidate[popped]
-                after_weight = bag_weight - w
-                after_value = bag_value - v
-                highest(new_bag, after_weight, after_value)
-    max_weight = 0
-    max_value = 0
-    for i in range(len(candidate)):
-        w,v = candidate[i]
-        max_weight += w
-        max_value += v
-    highest([i for i in range(len(candidate))], max_weight, max_value)
-        
-    return highest_value
+def main_edu(candidate :list[tuple[int,int]], limit:int):
+    # fix the initial point on dp table as (0,0)
+    candidate.insert(0,(0,0))
+    limit = limit + 1
+    
+    dp:list[tuple[int,int]] = [] # dp[a] = (k,i) : recognize until 0_th ~ k_th item and also has the bag max weight (i)
+    dp_value_table:list[int] = [] # dp[a] = (k,i) then dp_value_table[a] = v, the solved knapsack problem's value sum
+    dp_sack_table:list[list[int]] = [] # exact sack table for dp_value_table, for debuging reason
+    def knapsack_set(toItem:int, knapsackMax:int, valueSum:int , currentSack:list[tuple]) -> None:
+        nonlocal dp
+        nonlocal dp_value_table
+        index = -1
+        try:
+            index = dp.index((k, i))
+            dp_value_table[index] = valueSum
+        except:
+            dp.append((toItem, knapsackMax))
+            dp_value_table.append(valueSum)
+            dp_sack_table.append(currentSack)
+    
+    def knapsack_get(k, i) -> tuple[int, list[tuple]]:
+        try:
+            index = dp.index((k, i))
+            return (dp_value_table[index], dp_sack_table[index])
+        except:
+            return (0, [])
+    
+    def knapsack_view(k, j):
+        dp_view = [[-1 for u in range(j)] for i in range(k)]
+        for index in range(len(dp)):
+            value = dp_value_table[index]
+            i, j = dp[index]
+            dp_view[i][j] = value
+
+        for li in dp_view:
+            print(li)
+            
+    def knapsack_view_deep(k, j, opt=0):
+        dp_view = [[-1 for u in range(j)] for i in range(k)]
+        for index in range(len(dp)):
+            value = dp_sack_table[index]
+            i, j = dp[index]
+            dp_view[i][j] = list(map(lambda x: x[opt],value)) # collect only weight
+
+        for li in dp_view:
+            print(li)
+    candidate_len = len(candidate)
+    for k in range(candidate_len):
+        for i in range(limit):
+            target_w, target_v = candidate[k]
+            if k == 0 or i == 0:
+                knapsack_set(k, i, 0, [])
+            else:
+                # case of knapsack item not changed as before k
+                c_li = []
+                continue_case, c_li = knapsack_get(k-1, i)
+                
+                # case of add item to knapsack 
+                # (knapsack capable of i 's problem) => (k's value) + (knapsack capable of (i - k's weight) until k-1 th item)
+                additive_case = -1
+                a_li = []
+                if i-target_w > 0:
+                    additive_case, a_li = knapsack_get(k-1, i-target_w)
+                    additive_case += target_v
+                    a_li = a_li + [(target_w, target_v)]
+
+                # compare cases to assign
+                res = continue_case
+                res_li = c_li
+                
+                if (additive_case > continue_case):
+                    res = additive_case
+                    res_li = a_li
+                
+                knapsack_set(k, i, res, res_li)
+    print("weight")
+    knapsack_view_deep(candidate_len, limit)
+    print("value")
+    knapsack_view_deep(candidate_len, limit, opt=1)
+    print(candidate_len - 1, limit)
+    return knapsack_get(candidate_len - 1, limit - 1)
 
 if __name__ == "__main__":
     
     print("====TEST START====")
     
-    # Tester.init()
-    # for i in range(Tester.count):
-    #     put, take = Tester.next()
+    Tester.init()
+    for i in range(Tester.count):
+        put, take = Tester.next()
         
-    #     res = main(candidate=put[Tester.candidate], limit=put[Tester.limit])
+        res = main_edu(candidate=put[Tester.candidate], limit=put[Tester.limit])
         
-    #     print("result : ", res, "answer : ", take)
+        print("result : ", res, "answer : ", take)
         
-    first_input = list(map(int, input().split(' ')))
-    candidate = []
-    for i in range(first_input[0]):
-        candidate.append(tuple(map(int, input().split(' '))))
-    res = main(candidate=candidate, limit=first_input[1])
+    # first_input = list(map(int, input().split(' ')))
+    # candidate = []
+    # for i in range(first_input[0]):
+    #     candidate.append(tuple(map(int, input().split(' '))))
+    # res = main(candidate=candidate, limit=first_input[1])
 
-    print(res)
+    # print(res)
