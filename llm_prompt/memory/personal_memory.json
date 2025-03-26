@@ -99,6 +99,46 @@
                 "Include internal links",
                 "Maintain existing information while enhancing"
             ]
+        },
+        "knapsack_problem": {
+            "context": "BOJ 12865 - 0/1 Knapsack Problem",
+            "key_points": [
+                "Evolution of solution approaches from backtracking to optimized DP",
+                "Importance of space optimization in memory-constrained environments",
+                "Trade-offs between different data structures (HashMap vs Array)",
+                "Value of systematic problem-solving and documentation"
+            ],
+            "teaching_insights": [
+                "Guide rather than complete - focus on understanding over completion",
+                "Build knowledge through proper documentation and concept linking",
+                "Emphasize learning journey and problem-solving process",
+                "Create connections between related concepts for better understanding"
+            ],
+            "technical_learnings": [
+                "Space optimization techniques for DP problems",
+                "Practical considerations in algorithm implementation",
+                "Importance of validating theoretical optimizations",
+                "Systematic approach to problem-solving"
+            ],
+            "documentation_improvements": [
+                "Effective use of Obsidian for algorithm documentation",
+                "Creating meaningful concept connections",
+                "Balancing technical detail with learning journey",
+                "Building a sustainable knowledge base"
+            ],
+            "memory_retention": {
+                "keep": [
+                    "Teaching philosophy of guiding over completing",
+                    "Core technical insights about optimization",
+                    "Documentation best practices",
+                    "Systematic problem-solving approach"
+                ],
+                "forget": [
+                    "Specific implementation details",
+                    "Temporary debugging variables",
+                    "Intermediate solution attempts"
+                ]
+            }
         }
     }
 }

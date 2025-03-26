@@ -153,20 +153,21 @@ def main_edu(candidate :list[tuple[int,int]], limit:int):
         for i in range(limit):
             target_w, target_v = candidate[k]
             if k == 0 or i == 0:
-                knapsack_set(k, i, 0, [])
+                knapsack_set(k, i, 0, [(0,0)])
             else:
                 # case of knapsack item not changed as before k
                 c_li = []
-                continue_case, c_li = knapsack_get(k-1, i)
+                continue_case, c_li = knapsack_get(i)
                 
                 # case of add item to knapsack 
                 # (knapsack capable of i 's problem) => (k's value) + (knapsack capable of (i - k's weight) until k-1 th item)
                 additive_case = -1
                 a_li = []
-                if i-target_w > 0:
+                if i-target_w >= 0:
                     additive_case, a_li = knapsack_get(k-1, i-target_w)
                     additive_case += target_v
                     a_li = a_li + [(target_w, target_v)]
+                print(continue_case, additive_case)
 
                 # compare cases to assign
                 res = continue_case
@@ -181,8 +182,160 @@ def main_edu(candidate :list[tuple[int,int]], limit:int):
     knapsack_view_deep(candidate_len, limit)
     print("value")
     knapsack_view_deep(candidate_len, limit, opt=1)
-    print(candidate_len - 1, limit)
-    return knapsack_get(candidate_len - 1, limit - 1)
+    print(candidate_len-1, limit-1)
+    return knapsack_get(candidate_len-1, limit-1)
+
+
+def main_linear_indexing(candidate :list[tuple[int,int]], limit:int):
+    # fix the initial point on dp table as (0,0)
+    candidate.insert(0,(0,0))
+    limit = limit + 1
+    
+    dp:list[tuple[int,int]] = [] # dp[a] = (k,i) : recognize until 0_th ~ k_th item and also has the bag max weight (i)
+    dp_value_table:list[int] = [] # dp[a] = (k,i) then dp_value_table[a] = v, the solved knapsack problem's value sum
+    def knapsack_set(toItem:int, knapsackMax:int, valueSum:int) -> None:
+        nonlocal dp
+        nonlocal dp_value_table
+        index = -1
+        try:
+            index = dp.index((k, i))
+            dp_value_table[index] = valueSum
+        except:
+            dp.append((toItem, knapsackMax))
+            dp_value_table.append(valueSum)
+    
+    def knapsack_get(k, i) -> int:
+        try:
+            index = dp.index((k, i))
+            return dp_value_table[index]
+        except:
+            return 0
+            
+    candidate_len = len(candidate)
+    for k in range(candidate_len):
+        for i in range(limit):
+            target_w, target_v = candidate[k]
+            if k == 0 or i == 0:
+                knapsack_set(k, i, 0)
+            else:
+                # case of knapsack item not changed as before k
+                continue_case = knapsack_get(k-1, i)
+                
+                # case of add item to knapsack 
+                # (knapsack capable of i 's problem) => (k's value) + (knapsack capable of (i - k's weight) until k-1 th item)
+                additive_case = -1
+                if i-target_w >= 0:
+                    additive_case = knapsack_get(k-1, i-target_w)
+                    additive_case += target_v
+
+                # compare cases to assign
+                res = continue_case
+                
+                if (additive_case > continue_case):
+                    res = additive_case
+                
+                knapsack_set(k, i, res)
+    return knapsack_get(candidate_len-1, limit-1)
+
+
+def main_hashmap_indexing(candidate :list[tuple[int,int]], limit:int):
+    # fix the initial point on dp table as (0,0)
+    candidate.insert(0,(0,0))
+    limit = limit + 1
+    
+    # dp:list[tuple[int,int]] = [] # dp[a] = (k,i) : recognize until 0_th ~ k_th item and also has the bag max weight (i)
+    # dp_value_table:list[int] = [] # dp[a] = (k,i) then dp_value_table[a] = v, the solved knapsack problem's value sum
+    
+    dp:dict[tuple[int,int],int] = {} # hashmap version of dp and dp_value_table.
+    
+    def knapsack_set(toItem:int, knapsackMax:int, valueSum:int) -> None:
+        nonlocal dp
+        dp[(k, i)] = valueSum
+
+    
+    def knapsack_get(k, i) -> int:
+        return dp[(k, i)]
+            
+    candidate_len = len(candidate)
+    for k in range(candidate_len):
+        for i in range(limit):
+            target_w, target_v = candidate[k]
+            if k == 0 or i == 0:
+                knapsack_set(k, i, 0)
+            else:
+                # case of knapsack item not changed as before k
+                continue_case = knapsack_get(k-1, i)
+                
+                # case of add item to knapsack 
+                # (knapsack capable of i 's problem) => (k's value) + (knapsack capable of (i - k's weight) until k-1 th item)
+                additive_case = -1
+                if i-target_w >= 0:
+                    additive_case = knapsack_get(k-1, i-target_w)
+                    additive_case += target_v
+
+                # compare cases to assign
+                res = continue_case
+                
+                if (additive_case > continue_case):
+                    res = additive_case
+                
+                knapsack_set(k, i, res)
+    return knapsack_get(candidate_len-1, limit-1)
+
+def main_double_1d_array(candidate :list[tuple[int,int]], limit:int):
+    # fix the initial point on dp table as (0,0)
+    candidate.insert(0,(0,0))
+    limit = limit + 1
+    
+    # this is the 2D array approaches's simplicifation version.
+    # we only need two array for each iterations, trashing the old array and recept new.
+    dp_old = [0 for i in range(limit)]
+    dp_new = [0 for i in range(limit)]
+    dp = [dp_old, dp_new]
+    
+    
+    def knapsack_set(knapsackMax:int, valueSum:int) -> None:
+        nonlocal dp
+        dp[1][knapsackMax] = valueSum
+    
+    def knapsack_get(knapsackMax:int, time=0) -> int:
+        nonlocal dp
+        return dp[time][knapsackMax]
+    def knapsack_push():
+        nonlocal dp
+        dp.pop(0)
+        dp.append([0 for i in range(limit)])
+        
+            
+    candidate_len = len(candidate)
+    for k in range(candidate_len):
+        for i in range(limit):
+            target_w, target_v = candidate[k]
+            if k == 0 or i == 0:
+                knapsack_set(i, 0)
+            else:
+                # case of knapsack item not changed as before k
+                continue_case = knapsack_get(i)
+                
+                # case of add item to knapsack 
+                # (knapsack capable of i 's problem) => (k's value) + (knapsack capable of (i - k's weight) until k-1 th item)
+                additive_case = -1
+                if i-target_w >= 0:
+                    additive_case = knapsack_get(i-target_w)
+                    additive_case += target_v
+
+                # compare cases to assign
+                res = continue_case
+                
+                if (additive_case > continue_case):
+                    res = additive_case
+                
+                knapsack_set(i, res)
+        knapsack_push()
+    return knapsack_get( limit-1)
+
+
+
 
 if __name__ == "__main__":
     
@@ -192,7 +345,7 @@ if __name__ == "__main__":
     for i in range(Tester.count):
         put, take = Tester.next()
         
-        res = main_edu(candidate=put[Tester.candidate], limit=put[Tester.limit])
+        res = main_double_1d_array(candidate=put[Tester.candidate], limit=put[Tester.limit])
         
         print("result : ", res, "answer : ", take)
         
