@@ -27,9 +27,6 @@
 # 문제 : https://www.acmicpc.net/problem/12865
 #
 
-from audioop import add
-
-
 class Tester:
     candidate = 'candidate'
     limit = 'limit'  

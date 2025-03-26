@@ -11,13 +11,32 @@
             "id": "9353838afddad38a",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "12865.py.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "12865.py"
+            }
+          },
+          {
+            "id": "161724b57dfcfa31",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "1655.py.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1655.py"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -161,9 +180,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9353838afddad38a",
+  "active": "161724b57dfcfa31",
   "lastOpenFiles": [
     "12865.py.md",
+    "1655.py.md",
     "tester_remember_how.md",
     "11049.md",
     "2025-03-26.md"
