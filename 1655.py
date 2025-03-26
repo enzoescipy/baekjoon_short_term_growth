@@ -48,27 +48,27 @@ class Tester:
 
 def main(case:list[int]):
 
-    def see_where_to_inject(target:list[int], to_inject:int) -> int:
+    def see_where_to_inject(li:list[int], to_inject:int) -> int:
         # input(f"target : {target}")
         """
         calculate where to inject the to_inject integer to the sorted list, the target.
         Returns:
             -> int : the index of target. if target.insert(res, to_insert) then it is the proper place injection.
         """
-        if (len(target) == 0):
+        if (len(li) == 0):
             # print("zero")
             return 0
 
         # grab the middle index
-        target_len = len(target)
+        target_len = len(li)
         middle_index = math.floor(target_len / 2)
-        middle_value = target[middle_index]
+        middle_value = li[middle_index]
         if (to_inject < middle_value):
             # print("low")
-            return see_where_to_inject(target[0 : middle_index],to_inject)
+            return see_where_to_inject(li[0 : middle_index],to_inject)
         elif(middle_value < to_inject):
             # print("hi")
-            return middle_index + 1 + see_where_to_inject(target[middle_index+1 : ],to_inject)
+            return middle_index + 1 + see_where_to_inject(li[middle_index+1 : ],to_inject)
         else:
             # print("eq")
             return middle_index
@@ -102,14 +102,18 @@ def main(case:list[int]):
 
         res = get_middle(memory)
         shout_out_queue.append(res)
-        print(res, memory)
+        # print(res, memory)
     return shout_out_queue
 
 
 
-if __name__ == "__main__":
-    tester = Tester()
 
-    tester.add_case([1, 5, 2, 10, -99, 7, 5]) # -99, 1, 2, 5, 5, 7, 10
 
-    tester.test_all(main)
+input_num = int(input())
+input_list:list[int] = []
+for i in range(input_num):
+    input_list.append(int(input()))
+
+answer_list = main(input_list)
+for ans in answer_list:
+    print(ans)
