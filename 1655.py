@@ -29,6 +29,9 @@
 
 import math
 import random
+from typing import override
+
+from regex import R
 
 class Tester:
     def __init__(self):
@@ -59,6 +62,19 @@ class Tester:
                 if comp_res[i] != main_res[i]:
                     input("잘못되었습니다!")
 
+
+def main_brute_force(case):
+    current = []
+    res = []
+    for num in case:
+        current.append(num)
+        current.sort()
+        median = math.floor(len(current) / 2)
+        if len(current) % 2 == 0:
+            median -= 1
+        res.append(current[median])
+        print("current: ",current, "median: ",current[median])
+    return res
 
 def main_binary_injection(case):
     def see_where_to_inject(li, to_inject):
@@ -118,151 +134,193 @@ def main_binary_injection(case):
         # print(res, memory)
     return shout_out_queue
 
-def main(case):
-    def heap_get_parent_index(i:int):
-        return (i - 1) // 2
-    def heap_get_left_child_index(i:int):
-        return 2 * i + 1
-    def heap_get_right_child_index(i:int):
-        return 2 * i + 2
+class MaxHeap:
+    def __init__(self) -> None:
+        self.heap = []
     
-    def sift_up(heap:list[int], i:int, is_max_heap=True):
-        me = i
-        parent = heap_get_parent_index(me)
+    def heap_get_parent_index(self, index:int):
+        return (index - 1) // 2
+    def heap_get_left_child_index(self, index:int):
+        return 2 * index + 1
+    def heap_get_right_child_index(self, index:int):
+        return 2 * index + 2
+
+    def sift_up(self, index:int):
+        me = index
         while me > 0:
-            if is_max_heap and heap[me] <= heap[parent]:
+            parent = self.heap_get_parent_index(me)
+            if self.heap[me] <= self.heap[parent]:
                 return
-            if is_max_heap != True and heap[me] >= heap[parent]:
-                return
-            grab_parent = heap[parent]
-            heap[parent] = heap[me]
-            heap[me] = grab_parent
+            grab_parent = self.heap[parent]
+            self.heap[parent] = self.heap[me]
+            self.heap[me] = grab_parent
             
             me = parent
-            parent = heap_get_parent_index(me)
-    
-    def sift_down(heap:list[int], i:int, is_max_heap = True):
-        me = i
-        while me < len(heap):
-            child_left = heap_get_left_child_index(me)
-            child_right = heap_get_right_child_index(me)
-            if len(heap) <= child_left or len(heap) <= child_right:
-                if len(heap) > child_left:
-                    if is_max_heap:
-                        if heap[me] >= heap[child_left]:
-                            return
-                        else:
-                            grab_left_child = heap[child_left]
-                            heap[child_left] = heap[me]
-                            heap[me] = grab_left_child
-                            return
-                    else:
-                        if heap[me] <= heap[child_left]:
-                            return
-                        else:
-                            grab_left_child = heap[child_left]
-                            heap[child_left] = heap[me]
-                            heap[me] = grab_left_child
-                            return 
+    def sift_down(self, index:int):
+        me = index
+        while me < len(self.heap):
+            left_child = self.heap_get_left_child_index(me)
+            right_child = self.heap_get_right_child_index(me)
+            
+            if left_child >= len(self.heap) and right_child >= len(self.heap):
                 return
-            if is_max_heap and heap[me] >= heap[child_left] and heap[child_left] >= heap[child_right]:
+            elif left_child >= len(self.heap):
+                if self.heap[right_child] >= self.heap[me]:
+                    right_child_value = self.heap[right_child]
+                    self.heap[right_child] = self.heap[me]
+                    self.heap[me] = right_child_value
+                    me = right_child
+                    continue
                 return
-            if is_max_heap == False and heap[me] <= heap[child_left] and heap[child_left] <= heap[child_right]:
+            elif right_child >= len(self.heap):
+                if self.heap[left_child] >= self.heap[me]:
+                    left_child_value = self.heap[left_child]
+                    self.heap[left_child] = self.heap[me]
+                    self.heap[me] = left_child_value
+                    me = left_child
+                    continue
                 return
-            grab_left_child = heap[child_left]
-            grab_right_child = heap[child_right]
-            if is_max_heap:
-                if grab_left_child >= grab_right_child:
-                    heap[child_left] = heap[me]
-                    heap[me] = grab_left_child
-                    me = child_left
-                else:
-                    heap[child_right] = grab_left_child
-                    heap[child_left] = grab_right_child
-                    
-                    heap[child_right] = heap[me]
-                    heap[me] = grab_right_child
-                    me = child_right
-                    
+            
+            left_child_value = self.heap[left_child]
+            right_child_value = self.heap[right_child]
+            
+            if left_child_value >= self.heap[me] and left_child_value >= right_child_value:
+                self.heap[left_child] = self.heap[me]
+                self.heap[me] = left_child_value
+                me = left_child
+            elif right_child_value >= self.heap[me] and right_child_value >= left_child_value:
+                self.heap[right_child] = self.heap[me]
+                self.heap[me] = right_child_value
+                me = right_child
             else:
-                if grab_left_child <= grab_right_child:
-                    heap[child_left] = heap[me]
-                    heap[me] = grab_left_child
-                    me = child_left
-                else:
-                    heap[child_right] = grab_left_child
-                    heap[child_left] = grab_right_child
-                    
-                    heap[child_right] = heap[me]
-                    heap[me] = grab_right_child
-                    me = child_right
-                    
+                return
     
-    def push(heap: list[int], i:int, is_max_heap=True):
-        heap.append(i)
-        # print("heap: ",heap, "item: ",i)
-        sift_up(heap, len(heap) - 1, is_max_heap=is_max_heap)
-
-    def extrude_root(heap: list[int], is_max_heap=True):
-        res = heap[0]
-        heap[0] = heap[-1]
-        heap.pop(-1)
-        sift_down(heap, 0, is_max_heap=is_max_heap)
+    def push(self, value:int):
+        self.heap.append(value)
+        self.sift_up(len(self.heap) - 1)
+    def extrude_root(self):
+        res = self.heap[0]
+        self.heap[0] = self.heap[-1]
+        self.heap.pop(-1)
+        self.sift_down(0)
         return res
+
+class MinHeap(MaxHeap):
+    @override
+    def sift_down(self, index: int):
+        me = index
+        while me < len(self.heap):
+            left_child = self.heap_get_left_child_index(me)
+            right_child = self.heap_get_right_child_index(me)
+            
+            if left_child >= len(self.heap) and right_child >= len(self.heap):
+                return
+            elif left_child >= len(self.heap):
+                if self.heap[right_child] >= self.heap[me]:
+                    right_child_value = self.heap[right_child]
+                    self.heap[right_child] = self.heap[me]
+                    self.heap[me] = right_child_value
+                    me = right_child
+                    continue
+                return
+            elif right_child >= len(self.heap):
+                if self.heap[left_child] >= self.heap[me]:
+                    left_child_value = self.heap[left_child]
+                    self.heap[left_child] = self.heap[me]
+                    self.heap[me] = left_child_value
+                    me = left_child
+                    continue
+                return
+            
+            left_child_value = self.heap[left_child]
+            right_child_value = self.heap[right_child]
+            
+            if left_child_value <= self.heap[me] and left_child_value <= right_child_value:
+                self.heap[left_child] = self.heap[me]
+                self.heap[me] = left_child_value
+                me = left_child
+            elif right_child_value <= self.heap[me] and right_child_value <= left_child_value:
+                self.heap[right_child] = self.heap[me]
+                self.heap[me] = right_child_value
+                me = right_child
+            else:
+                return
     
-    # define heap. max heap is for lower values, min hip is for higher values
-    max_heap = []
-    min_heap = []
+    @override
+    def sift_up(self, index: int):
+        me = index
+        while me > 0:
+            parent = self.heap_get_parent_index(me)
+            if self.heap[me] >= self.heap[parent]:
+                return
+            grab_parent = self.heap[parent]
+            self.heap[parent] = self.heap[me]
+            self.heap[me] = grab_parent
+            
+            me = parent
+
+def main(case):
+    max_heap = MaxHeap()
+    min_heap = MinHeap()
     temporary_storage = []
     
     def push_called(call:int):
         
         # null catching
-        if len(max_heap) == 0 or len(min_heap) == 0:
+        if len(max_heap.heap) == 0 or len(min_heap.heap) == 0:
             temporary_storage.append(call)
             if len(temporary_storage) == 2:
                 i1 = temporary_storage[0]
                 i2 = temporary_storage[1]
                 if i1 < i2:
-                    push(max_heap, i1)
-                    push(min_heap, i2)
+                    max_heap.push(i1)
+                    min_heap.push(i2)
                 else:
-                    push(max_heap, i2)
-                    push(min_heap, i1)
+                    max_heap.push(i2)
+                    min_heap.push(i1)
             return
         
         # pushing stage
-        if call < max_heap[0] and call < min_heap[0]:
-            push(max_heap, call)
-        else: 
-            push(min_heap, call, is_max_heap=False)
-            
+        if call <= max_heap.heap[0] and call <= min_heap.heap[0]:
+            max_heap.push(call)
+        elif call >= max_heap.heap[0] and call >= min_heap.heap[0]:
+            min_heap.push(call)
+        else:
+            # balancing
+            delta = len(max_heap.heap) - len(min_heap.heap)
+            if delta >= 0:
+                min_heap.push(call)
+            elif delta < 0:
+                max_heap.push(call)
+                
         # balancing stage
-        delta = len(max_heap) - len(min_heap)
+        delta = len(max_heap.heap) - len(min_heap.heap)
         if delta > 1:
             for i in range(delta - 1):
-                popped = extrude_root(max_heap)
-                push(min_heap, popped, is_max_heap=False)
+                popped = max_heap.extrude_root()
+                min_heap.push(popped)
         elif delta < -1:
             for i in range(-delta - 1):
-                popped = extrude_root(min_heap, is_max_heap=False)
-                push(max_heap, popped)
+                popped = min_heap.extrude_root()
+                max_heap.push(popped)
 
     res = []
     for call in case:
         push_called(call)
-        print(max_heap, min_heap)
-        if (len(max_heap) == 0 and len(min_heap) == 0):
+        print(max_heap.heap, min_heap.heap, end='')
+        if (len(max_heap.heap) == 0 and len(min_heap.heap) == 0):
             res.append(temporary_storage[0])
+            print(res[-1])
             continue
         
-        if len(max_heap) == len(min_heap):
-            res.append(max_heap[0])
+        if len(max_heap.heap) == len(min_heap.heap):
+            res.append(max_heap.heap[0])
         else:
-            if len(max_heap) < len(min_heap):
-                res.append(min_heap[0])
+            if len(max_heap.heap) <= len(min_heap.heap):
+                res.append(min_heap.heap[0])
             else:
-                res.append(max_heap[0])
+                res.append(max_heap.heap[0])
+        print(res[-1])
     
     return res
         
@@ -271,10 +329,10 @@ tester = Tester()
 
 
 ## arbitrary testing section
-tester.add_case([19, 42, 46, 81, 46, 78, 38, -59, -2, 8])
-tester.add_case([-16, -28, -96, -91, -66, -23, -24, 95, 22, 54])
+# tester.add_case([19, 42, 46, 81, 46, 78, 38, -59, -2, 8])
+# tester.add_case([-16, -28, -96, -91, -66, -23, -24, 95, 22, 54])
 tester.add_case([-59, 68, -9, 58, 59, 41, -81, -92, -75, -10])
-tester.compare_all(main, main_binary_injection)
+tester.compare_all(main, main_brute_force)
 
 ## random testing section
 # for i in range(100):
