@@ -27,6 +27,7 @@
 # 2
 # 5
 
+from curses import nonl
 import math
 import random
 from typing import override
@@ -73,7 +74,6 @@ def main_brute_force(case):
         if len(current) % 2 == 0:
             median -= 1
         res.append(current[median])
-        print("current: ",current, "median: ",current[median])
     return res
 
 def main_binary_injection(case):
@@ -135,17 +135,17 @@ def main_binary_injection(case):
     return shout_out_queue
 
 class MaxHeap:
-    def __init__(self) -> None:
+    def __init__(self):
         self.heap = []
     
-    def heap_get_parent_index(self, index:int):
+    def heap_get_parent_index(self, index):
         return (index - 1) // 2
-    def heap_get_left_child_index(self, index:int):
+    def heap_get_left_child_index(self, index):
         return 2 * index + 1
-    def heap_get_right_child_index(self, index:int):
+    def heap_get_right_child_index(self, index):
         return 2 * index + 2
 
-    def sift_up(self, index:int):
+    def sift_up(self, index):
         me = index
         while me > 0:
             parent = self.heap_get_parent_index(me)
@@ -156,7 +156,7 @@ class MaxHeap:
             self.heap[me] = grab_parent
             
             me = parent
-    def sift_down(self, index:int):
+    def sift_down(self, index):
         me = index
         while me < len(self.heap):
             left_child = self.heap_get_left_child_index(me)
@@ -195,7 +195,7 @@ class MaxHeap:
             else:
                 return
     
-    def push(self, value:int):
+    def push(self, value):
         self.heap.append(value)
         self.sift_up(len(self.heap) - 1)
     def extrude_root(self):
@@ -206,8 +206,7 @@ class MaxHeap:
         return res
 
 class MinHeap(MaxHeap):
-    @override
-    def sift_down(self, index: int):
+    def sift_down(self, index):
         me = index
         while me < len(self.heap):
             left_child = self.heap_get_left_child_index(me)
@@ -216,7 +215,7 @@ class MinHeap(MaxHeap):
             if left_child >= len(self.heap) and right_child >= len(self.heap):
                 return
             elif left_child >= len(self.heap):
-                if self.heap[right_child] >= self.heap[me]:
+                if self.heap[right_child] <= self.heap[me]:
                     right_child_value = self.heap[right_child]
                     self.heap[right_child] = self.heap[me]
                     self.heap[me] = right_child_value
@@ -224,7 +223,7 @@ class MinHeap(MaxHeap):
                     continue
                 return
             elif right_child >= len(self.heap):
-                if self.heap[left_child] >= self.heap[me]:
+                if self.heap[left_child] <= self.heap[me]:
                     left_child_value = self.heap[left_child]
                     self.heap[left_child] = self.heap[me]
                     self.heap[me] = left_child_value
@@ -246,8 +245,7 @@ class MinHeap(MaxHeap):
             else:
                 return
     
-    @override
-    def sift_up(self, index: int):
+    def sift_up(self, index):
         me = index
         while me > 0:
             parent = self.heap_get_parent_index(me)
@@ -264,8 +262,10 @@ def main(case):
     min_heap = MinHeap()
     temporary_storage = []
     
-    def push_called(call:int):
-        
+    def push_called(call):
+        nonlocal max_heap
+        nonlocal min_heap
+        nonlocal temporary_storage
         # null catching
         if len(max_heap.heap) == 0 or len(min_heap.heap) == 0:
             temporary_storage.append(call)
@@ -307,10 +307,8 @@ def main(case):
     res = []
     for call in case:
         push_called(call)
-        print(max_heap.heap, min_heap.heap, end='')
         if (len(max_heap.heap) == 0 and len(min_heap.heap) == 0):
             res.append(temporary_storage[0])
-            print(res[-1])
             continue
         
         if len(max_heap.heap) == len(min_heap.heap):
@@ -320,21 +318,19 @@ def main(case):
                 res.append(min_heap.heap[0])
             else:
                 res.append(max_heap.heap[0])
-        print(res[-1])
     
     return res
         
 
-tester = Tester()
+# tester = Tester()
 
 
 ## arbitrary testing section
-# tester.add_case([19, 42, 46, 81, 46, 78, 38, -59, -2, 8])
-# tester.add_case([-16, -28, -96, -91, -66, -23, -24, 95, 22, 54])
-tester.add_case([-59, 68, -9, 58, 59, 41, -81, -92, -75, -10])
-tester.compare_all(main, main_brute_force)
 
-## random testing section
+# tester.add_case([-59, 68, -9, 58, 59, 41, -81, -92, -75, -10])
+# tester.compare_all(main, main_brute_force)
+
+# # random testing section
 # for i in range(100):
 #     tes = []
 #     for i in range(10):
@@ -343,12 +339,12 @@ tester.compare_all(main, main_brute_force)
 
 # tester.compare_all(main, main_binary_injection)
 
-## real running code
-# input_num = int(input())
-# input_list = []
-# for i in range(input_num):
-#     input_list.append(int(input()))
+# real running code
+input_num = int(input())
+input_list = []
+for i in range(input_num):
+    input_list.append(int(input()))
 
-# answer_list = main(input_list)
-# for ans in answer_list:
-#     print(ans)
+answer_list = main(input_list)
+for ans in answer_list:
+    print(ans)
