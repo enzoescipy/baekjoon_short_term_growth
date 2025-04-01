@@ -27,13 +27,6 @@
 # 2
 # 5
 
-from curses import nonl
-import math
-import random
-from typing import override
-
-from regex import R
-
 class Tester:
     def __init__(self):
         self.test_cases = []
