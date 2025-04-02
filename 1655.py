@@ -27,6 +27,8 @@
 # 2
 # 5
 
+import math
+
 class Tester:
     def __init__(self):
         self.test_cases = []

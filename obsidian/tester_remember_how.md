@@ -57,6 +57,33 @@ Test #2: FAILED ✗ (Got: 0, Expected: 146)
 Passed: 1/2 tests
 ```
 
+## Advanced: Comparison-Based Testing
+```python
+def compare_all(self, optimized_solution, brute_force_solution):
+    """Compare optimized solution with brute force solution"""
+    for i, test in enumerate(self.test_cases):
+        opt_result = optimized_solution(test["items"], test["limit"])
+        brute_result = brute_force_solution(test["items"], test["limit"])
+        
+        if opt_result == brute_result:
+            print(f"Test #{i+1}: PASSED ✓ (Got: {opt_result})")
+            self.results["passed"] += 1
+        else:
+            print(f"Test #{i+1}: FAILED ✗ (Got: {opt_result}, Expected: {brute_result})")
+            self.results["failed"] += 1
+        self.results["total"] += 1
+```
+
+### Usage Example
+```python
+# Create tester and add test cases
+tester = Tester()
+tester.add_test([(6, 13), (4, 8), (3, 6)], 7, 14)
+
+# Run comparison test
+tester.compare_all(optimized_solution, brute_force_solution)
+```
+
 ## Remember
 - Test cases are triples: (items, weight_limit, expected_output)
 - Items are (weight, value) tuples
