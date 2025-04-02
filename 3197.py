@@ -1,8 +1,4 @@
-import string
-
-from sympy import true
-from tomlkit import item
-
+import random
 
 class State:
     ice = False
@@ -187,13 +183,20 @@ def main_brute(case):
 if __name__ == "__main__":
     tester = Tester()
     
-    tester.add_case(Tester.purify_string_matrix(    "...XXXXXX..XX.XXX\n"+
-                                                    "....XXXXXXXXX.XXX\n"+
-                                                    "...XXXXXXXXXXXX..\n"+
-                                                    "..XXXXX.LXXXXXX..\n"+
-                                                    ".XXXXXX..XXXXXX..\n"+
-                                                    "XXXXXXX...XXXX...\n"+
-                                                    "..XXXXX...XXX....\n"+
-                                                    "....XXXXX.XXXL..."))
+    ## manual cases
+    # tester.add_case(Tester.purify_string_matrix(    "...XXXXXX..XX.XXX\n"+
+    #                                                 "....XXXXXXXXX.XXX\n"+
+    #                                                 "...XXXXXXXXXXXX..\n"+
+    #                                                 "..XXXXX.LXXXXXX..\n"+
+    #                                                 ".XXXXXX..XXXXXX..\n"+
+    #                                                 "XXXXXXX...XXXX...\n"+
+    #                                                 "..XXXXX...XXX....\n"+
+    #                                                 "....XXXXX.XXXL..."))
     
-    tester.run_cases(main_brute)
+    # tester.run_cases(main_brute)
+    
+    def random_swan(rows, cols):
+        case_str = ""
+        for i in range(rows):
+            for j in range(cols):
+                
