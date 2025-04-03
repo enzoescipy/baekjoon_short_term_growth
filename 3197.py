@@ -1,4 +1,6 @@
+from operator import index
 import random
+import time
 
 class State:
     ice = False
@@ -78,15 +80,33 @@ class Tester:
     
     def compare_cases(self, ans_func, target_func):
         print("========compare running ========")
+        NSMULTIPLY = 1000000000
+        ans_acc_t = 0
+        tar_acc_t = 0
         for case in self.cases:
-            print("ans : ", ans_res[0])
-            print(Tester.revert_purify((ans_res[1])))
-            print("target : ", target_res[0])
-            print(Tester.revert_purify((target_res[1])))
             
-            ans_res = ans_func(case)
-            target_res = target_func(case)
+            print("case : ", case[0])
+            print(Tester.revert_purify((case[1])))
+            
+            # run brute
+            t_ans = time.perf_counter()
+            ans_res = ans_func((Tester.deepcopy(case[0]), Tester.deepcopy(case[1])))
+            t_ans = time.perf_counter() - t_ans
+            
+            # run main
+            t_target = time.perf_counter()
+            target_res = target_func((Tester.deepcopy(case[0]), Tester.deepcopy(case[1])))
+            t_target = time.perf_counter() - t_target
+            
             print("is equal? : ", ans_res == target_res)
+            if ((ans_res == target_res) != True):
+                input("틀렸습니다!")
+            print("ans ret: ", ans_res, "target ret: ", target_res)
+            print("ans time (ns): ",t_ans * NSMULTIPLY, "target time (ns): ", t_target * NSMULTIPLY)
+            ans_acc_t += t_ans
+            tar_acc_t += t_target
+        print("avr ans take: ", ans_acc_t / len(self.cases) * NSMULTIPLY)
+        print("avr target take: ", tar_acc_t  / len(self.cases) * NSMULTIPLY)
 
 def main_brute(case):
     # case is the (swan_pos, pond)
@@ -183,6 +203,18 @@ def main_brute(case):
 if __name__ == "__main__":
     tester = Tester()
     
+    # submit cases
+    rows, cols = map(int, input().split(' '))
+    input_string = ""
+    for i in range(rows):
+        input_string += input()
+        input_string += "\n"
+    input_string = input_string[:-1]
+    
+    
+    res = main_brute(Tester.purify_string_matrix(input_string))
+    print(res)
+    
     ## manual cases
     # tester.add_case(Tester.purify_string_matrix(    "...XXXXXX..XX.XXX\n"+
     #                                                 "....XXXXXXXXX.XXX\n"+
@@ -195,8 +227,45 @@ if __name__ == "__main__":
     
     # tester.run_cases(main_brute)
     
-    def random_swan(rows, cols):
-        case_str = ""
-        for i in range(rows):
-            for j in range(cols):
-                
+    
+    # ## random cases, worst case complexity graph calculation
+    # def random_swan(rows, cols):
+    #     while True:
+    #         # make the pond
+    #         case_str = ""
+    #         for i in range(rows):
+    #             for j in range(cols):
+    #                 is_water = random.randint(0,1) # 1 then is water
+    #                 if is_water == 1:
+    #                     case_str += "."
+    #                 else:
+    #                     case_str += "X"
+    #             case_str += "\n"
+    #         case_str = case_str[:-1]
+    #         # place the swan
+    #         case_str = list(case_str)
+    #         counter = 2
+    #         if case_str.count(".") < 2:
+    #             continue
+    #         while counter > 0:
+    #             rand_water = random.randint(0,len(case_str) - 1)
+    #             if case_str[rand_water] == ".":
+    #                 case_str[rand_water] = "L"
+    #                 counter -= 1
+    #         return "".join(case_str)
+    
+    # n = 30
+    # for i in range(10000):
+    #     tester.add_case(Tester.purify_string_matrix(random_swan(n, n)))
+    
+    # tester.compare_cases(main_brute, main_brute)
+    
+    # # report for main_brute
+    # # n    |  t (ns, average)
+    # # 3    | 7000
+    # # 10   | 90000
+    # # 20   | 400000
+    # # 30   | 1000000
+    # # roughly, Omega(main_brute) = Omega(n)
+    
+    
