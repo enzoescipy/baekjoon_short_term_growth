@@ -203,17 +203,17 @@ def main_brute(case):
 if __name__ == "__main__":
     tester = Tester()
     
-    # submit cases
-    rows, cols = map(int, input().split(' '))
-    input_string = ""
-    for i in range(rows):
-        input_string += input()
-        input_string += "\n"
-    input_string = input_string[:-1]
+    # # submit cases
+    # rows, cols = map(int, input().split(' '))
+    # input_string = ""
+    # for i in range(rows):
+    #     input_string += input()
+    #     input_string += "\n"
+    # input_string = input_string[:-1]
     
     
-    res = main_brute(Tester.purify_string_matrix(input_string))
-    print(res)
+    # res = main_brute(Tester.purify_string_matrix(input_string))
+    # print(res)
     
     ## manual cases
     # tester.add_case(Tester.purify_string_matrix(    "...XXXXXX..XX.XXX\n"+
@@ -228,37 +228,38 @@ if __name__ == "__main__":
     # tester.run_cases(main_brute)
     
     
-    # ## random cases, worst case complexity graph calculation
-    # def random_swan(rows, cols):
-    #     while True:
-    #         # make the pond
-    #         case_str = ""
-    #         for i in range(rows):
-    #             for j in range(cols):
-    #                 is_water = random.randint(0,1) # 1 then is water
-    #                 if is_water == 1:
-    #                     case_str += "."
-    #                 else:
-    #                     case_str += "X"
-    #             case_str += "\n"
-    #         case_str = case_str[:-1]
-    #         # place the swan
-    #         case_str = list(case_str)
-    #         counter = 2
-    #         if case_str.count(".") < 2:
-    #             continue
-    #         while counter > 0:
-    #             rand_water = random.randint(0,len(case_str) - 1)
-    #             if case_str[rand_water] == ".":
-    #                 case_str[rand_water] = "L"
-    #                 counter -= 1
-    #         return "".join(case_str)
+    ## random cases, worst case complexity graph calculation
+    def random_swan(rows, cols):
+        while True:
+            # make the pond
+            case_str = ""
+            for i in range(rows):
+                for j in range(cols):
+                    is_water = random.randint(0,1) # 1 then is water
+                    if is_water == 1:
+                        case_str += "."
+                    else:
+                        case_str += "X"
+                case_str += "\n"
+            case_str = case_str[:-1]
+            # place the swan
+            case_str = list(case_str)
+            counter = 2
+            if case_str.count(".") < 2:
+                continue
+            while counter > 0:
+                rand_water = random.randint(0,len(case_str) - 1)
+                if case_str[rand_water] == ".":
+                    case_str[rand_water] = "L"
+                    counter -= 1
+            return "".join(case_str)
     
-    # n = 30
-    # for i in range(10000):
-    #     tester.add_case(Tester.purify_string_matrix(random_swan(n, n)))
+    n = 4
+    for i in range(100000):
+        rand_pond = random_swan(n,n)
+        tester.add_case(Tester.purify_string_matrix(rand_pond))
     
-    # tester.compare_cases(main_brute, main_brute)
+    tester.compare_cases(main_brute, main_brute)
     
     # # report for main_brute
     # # n    |  t (ns, average)
