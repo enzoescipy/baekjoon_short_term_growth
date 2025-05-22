@@ -123,7 +123,7 @@ def main_brute(case):
         e.g) [
             [T,T,F],
             [T,F,T],
-            [F,T,F],
+            [F,T,T],
         ]
         ->
              [
@@ -190,7 +190,7 @@ def main_brute(case):
     ans = 0  
     while True:
         pond_copy = Tester.deepcopy(pond)
-        pond_arify(pond_copy)
+        pond_arify(pond_copy) # needs for the halt condition
         swan1 = swan_pos[0]
         swan2 = swan_pos[1]
         if pond_copy[swan1[0]][swan1[1]] == pond_copy[swan2[0]][swan2[1]]:
